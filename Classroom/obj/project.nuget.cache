@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "iIjMR/DK5yYEC3izneE9N3QK+GGV8iqUZlk2YPusX/rhq1L/GQ0asIyX4o4h+jslif1s8aiGfvrDXXSHjto52w==",
+  "dgSpecHash": "7jVB8RwkUgDo0ZrW4yq585KdOQZ6brDVULan16QD2HQInq7D0N+YZKUFUJmGhM3ZXZ81sYiStUZC6Zjc5O7k8A==",
   "success": true,
   "projectFilePath": "D:\\Education.Api\\Classroom\\Classroom.csproj",
   "expectedPackageFiles": [
@@ -34,6 +34,7 @@
     "C:\\Users\\ogabe\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\6.0.11\\microsoft.entityframeworkcore.relational.6.0.11.nupkg.sha512",
     "C:\\Users\\ogabe\\.nuget\\packages\\microsoft.entityframeworkcore.sqlite\\6.0.11\\microsoft.entityframeworkcore.sqlite.6.0.11.nupkg.sha512",
     "C:\\Users\\ogabe\\.nuget\\packages\\microsoft.entityframeworkcore.sqlite.core\\6.0.11\\microsoft.entityframeworkcore.sqlite.core.6.0.11.nupkg.sha512",
+    "C:\\Users\\ogabe\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\6.0.11\\microsoft.entityframeworkcore.tools.6.0.11.nupkg.sha512",
     "C:\\Users\\ogabe\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\ogabe\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\6.0.0\\microsoft.extensions.caching.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\ogabe\\.nuget\\packages\\microsoft.extensions.caching.memory\\6.0.1\\microsoft.extensions.caching.memory.6.0.1.nupkg.sha512",

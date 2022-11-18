@@ -7,5 +7,6 @@ namespace Classroom.Context;
 public class AppDbContext:IdentityDbContext<User, Role, Guid>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options):base(options) { }
+    public DbSet<Cource>? Cources { get; set; }
 
 }
