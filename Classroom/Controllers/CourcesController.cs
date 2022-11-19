@@ -110,6 +110,16 @@ public class CourcesController:ControllerBase
         return Ok();
     }
 
+    public IActionResult Get()
+    {
+        return NotFound();
+    }
+
+    public IActionResult Result()
+    {
+        return Ok();
+    }
+
 
 
 
