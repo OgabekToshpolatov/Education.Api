@@ -3,6 +3,7 @@ using System;
 using Classroom.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Classroom.Context.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221118102136_Added Usercources")]
+    partial class AddedUsercources
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.11");
@@ -258,13 +260,13 @@ namespace Classroom.Context.Migrations
             modelBuilder.Entity("Classroom.Entities.UserCource", b =>
                 {
                     b.HasOne("Classroom.Entities.Cource", "Cource")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("CourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Classroom.Entities.User", "User")
-                        .WithMany("Cources")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -323,16 +325,6 @@ namespace Classroom.Context.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Classroom.Entities.Cource", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Classroom.Entities.User", b =>
-                {
-                    b.Navigation("Cources");
                 });
 #pragma warning restore 612, 618
         }

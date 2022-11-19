@@ -1,10 +1,10 @@
-namespace Classroom.Entities;
+namespace Classroom.Models;
 
-public class Cource
+public class CourceDto
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }
     public string? Key { get; set; }
 
-    public virtual List<UserCource>? Users { get; set; }
+    public List<UserDto?>? Users { get; set; }
 }
