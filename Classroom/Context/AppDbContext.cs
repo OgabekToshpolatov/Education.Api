@@ -9,5 +9,6 @@ public class AppDbContext:IdentityDbContext<User, Role, Guid>
     public AppDbContext(DbContextOptions<AppDbContext> options):base(options) { }
     public DbSet<Cource>? Cources { get; set; }
     public DbSet<UserCource>? UserCources { get; set; }
+    public DbSet<Entities.Task>? Tasks { get; set; }
 
 }
