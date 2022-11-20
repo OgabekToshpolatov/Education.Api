@@ -322,7 +322,7 @@ namespace Classroom.Context.Migrations
             modelBuilder.Entity("Classroom.Entities.Task", b =>
                 {
                     b.HasOne("Classroom.Entities.Cource", "Cource")
-                        .WithMany()
+                        .WithMany("Tasks")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -358,7 +358,7 @@ namespace Classroom.Context.Migrations
                         .IsRequired();
 
                     b.HasOne("Classroom.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("UserTasks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -421,6 +421,8 @@ namespace Classroom.Context.Migrations
 
             modelBuilder.Entity("Classroom.Entities.Cource", b =>
                 {
+                    b.Navigation("Tasks");
+
                     b.Navigation("Users");
                 });
 
@@ -432,6 +434,8 @@ namespace Classroom.Context.Migrations
             modelBuilder.Entity("Classroom.Entities.User", b =>
                 {
                     b.Navigation("Cources");
+
+                    b.Navigation("UserTasks");
                 });
 #pragma warning restore 612, 618
         }

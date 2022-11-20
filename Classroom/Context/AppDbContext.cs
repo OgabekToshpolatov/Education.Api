@@ -10,5 +10,6 @@ public class AppDbContext:IdentityDbContext<User, Role, Guid>
     public DbSet<Cource>? Cources { get; set; }
     public DbSet<UserCource>? UserCources { get; set; }
     public DbSet<Entities.Task>? Tasks { get; set; }
+    public DbSet<UserTask>? UserTasks { get; set; }
 
 }
