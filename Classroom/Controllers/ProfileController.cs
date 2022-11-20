@@ -22,7 +22,7 @@ public class ProfileController:ControllerBase
         _userManager = userManager ;
     }
 
-    [HttpGet("/courses")]
+    [HttpGet("courses")]
     public async Task<IActionResult> GetCourses()
     {
         var user =await  _userManager.GetUserAsync(User);
