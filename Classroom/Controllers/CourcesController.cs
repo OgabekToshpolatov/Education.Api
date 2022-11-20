@@ -12,7 +12,7 @@ namespace Classroom.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class CourcesController:ControllerBase
+public partial class CourcesController:ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly UserManager<User> _userManager;
@@ -105,6 +105,29 @@ public class CourcesController:ControllerBase
 
         _context.Cources?.Remove(cource);
    
+        await _context.SaveChangesAsync();
+
+        return Ok();
+    }
+
+    [HttpPost("{id}/join")]
+    public async Task<IActionResult> JoinCource(Guid id,[FromBody] JoinCourceDto joinCourceDto)
+    {
+        var cource =await  _context.Cources!.FirstOrDefaultAsync(c => c.Id == id);
+
+        if(cource is null) 
+                    return NotFound();
+        var user = await _userManager.GetUserAsync(User);
+
+        if(cource.Users!.Any( uc => uc.UserId == user.Id) == true) return BadRequest("Siz ushbu kursda borsiz");
+
+        _context.UserCources!.Add(new UserCource()
+        { 
+            UserId = user.Id,
+            CourceId = cource.Id,
+            IsAdmin = false
+        });
+
         await _context.SaveChangesAsync();
 
         return Ok();
