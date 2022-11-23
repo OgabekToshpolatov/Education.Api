@@ -8,12 +8,12 @@ namespace Classroom.Controllers;
 
 public partial class CourcesController
 {
-   [HttpPost("{courceId}/tasks")]
-   public async Task<IActionResult> AddTask(Guid courceId, [FromBody] CreateTaskDto createTaskDto)
+   [HttpPost("{courseId}/tasks")]
+   public async Task<IActionResult> AddTask(Guid courseId, [FromBody] CreateTaskDto createTaskDto)
    {
        if(!ModelState.IsValid) return BadRequest();
 
-       var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == courceId);
+       var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == courseId);
 
        if(cource is null) return NotFound();
 
@@ -24,7 +24,7 @@ public partial class CourcesController
        var task = createTaskDto.Adapt<Classroom.Entities.Task>();
 
        task.CreatedDate = DateTime.Now;
-       task.CourseId = courceId;
+       task.CourseId = courseId;
 
        await _context.Tasks!.AddAsync(task);
        await _context.SaveChangesAsync();
@@ -32,11 +32,11 @@ public partial class CourcesController
        return Ok(task.Adapt<TaskDto>());
    }
 
-   [HttpGet("{courceId}/tasks")]
-   public async Task<IActionResult> GetTasks(Guid courceId)
+   [HttpGet("{courseId}/tasks")]
+   public async Task<IActionResult> GetTasks(Guid courseId)
    {
     // user cource azosi ekanligini tekshirish kerak.
-         var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == courceId);
+         var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == courseId);
 
          if(cource is null ) return NotFound();
 
@@ -45,24 +45,24 @@ public partial class CourcesController
           return Ok(tasks ?? new List<TaskDto>());
    }
 
-   [HttpGet("{courceId}/tasks/{taskId}")]
-   public async Task<IActionResult> GetTaskById(Guid courceId, Guid taskId)
+   [HttpGet("{courseId}/tasks/{taskId}")]
+   public async Task<IActionResult> GetTaskById(Guid courseId, Guid taskId)
    {
       // user cource azosi ekanligini teskshirish kerak.
       //cource bor  yoki yuqligini teskhirish kk 
-      var task =await _context.Tasks!.FirstOrDefaultAsync( t => t.Id == taskId && t.CourseId ==courceId);
+      var task =await _context.Tasks!.FirstOrDefaultAsync( t => t.Id == taskId && t.CourseId ==courseId);
       
       if(task is null) return NotFound();
 
       return Ok(task.Adapt<TaskDto>());
    }
 
-   [HttpPut("{courceId}/tasks/{taskId}")]
-   public async Task<IActionResult> UpdateTask(Guid courceId, Guid taskId,[FromBody] UpdateTaskDto updateTaskDto)
+   [HttpPut("{courseId}/tasks/{taskId}")]
+   public async Task<IActionResult> UpdateTask(Guid courseId, Guid taskId,[FromBody] UpdateTaskDto updateTaskDto)
    {
       // user cource azosi ekanligini teskshirish kerak.
       //cource bor  yoki yuqligini teskhirish kk 
-      var task =await _context.Tasks!.FirstOrDefaultAsync( t => t.Id == taskId && t.CourseId ==courceId);
+      var task =await _context.Tasks!.FirstOrDefaultAsync( t => t.Id == taskId && t.CourseId ==courseId);
       
       if(task is null) return NotFound();
 
@@ -75,18 +75,57 @@ public partial class CourcesController
 
 
 
-   [HttpDelete("{courceId}/tasks/{taskId}")]
-   public async Task<IActionResult> DeleteTask(Guid courceId, Guid taskId)
+   [HttpDelete("{courseId}/tasks/{taskId}")]
+   public async Task<IActionResult> DeleteTask(Guid courseId, Guid taskId)
    {
       // user cource admini ekanligini teskshirish kerak.
       //cource bor  yoki yuqligini teskhirish kk 
-      var task =await _context.Tasks!.FirstOrDefaultAsync( t => t.Id == taskId && t.CourseId ==courceId);
+      var task =await _context.Tasks!.FirstOrDefaultAsync( t => t.Id == taskId && t.CourseId ==courseId);
       
       if(task is null) return NotFound();
 
       _context.Tasks!.Remove(task);
       await _context.SaveChangesAsync();
       return Ok();
+   }
+
+   [HttpGet("{courseId}/tasks/{taskId}/results")]
+   public async Task<IActionResult> GetTaskResults(Guid courseId, Guid taskId)
+   {
+      var task =await  _context.Tasks!.FirstOrDefaultAsync(t => t.Id == taskId && t.CourseId == courseId);
+      if(task is null) 
+               return NotFound();
+
+      var taskDto = task.Adapt<UsersTaskResultsDto>();
+
+      if(task.UserTasks is null) return Ok(taskDto);
+
+      foreach(var result in task.UserTasks)
+      {
+         taskDto.UsersResult ??= new List<UsersTaskResult>();
+         taskDto.UsersResult.Add(result.Adapt<UsersTaskResult>());
+      }
+
+      return Ok(taskDto);
+      
+   }
+
+   [HttpPut("{courseId}/tasks/{taskId}/results/{resultId}")]
+   public async Task<IActionResult> UpdateUserResult(Guid courseId, Guid taskId, Guid resultId, CreateUserTaskResultDto resultDto)
+   {
+       var task =await  _context.Tasks!.FirstOrDefaultAsync(t => t.Id == taskId && t.CourseId == courseId);
+      if(task is null) 
+               return NotFound();
+
+       var result = task.UserTasks?.FirstOrDefault(usertask => usertask.Id == resultId);
+       if(result is null) return NotFound();
+
+       result.Status = resultDto.Status;
+       result.Description = resultDto.Description;
+
+       await _context.SaveChangesAsync();
+
+       return Ok(result.Adapt<UserTaskResult>());        
    }
 
 
