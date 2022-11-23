@@ -60,24 +60,24 @@ public partial class CourcesController:ControllerBase
         return Ok(cource?.ToDto());
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetCourceById(Guid id)
+    [HttpGet("{courseId}")]
+    public async Task<IActionResult> GetCourceById(Guid courseId)
     {
-        var cource = await _context.Cources!.FirstOrDefaultAsync( c => c.Id == id);
+        var cource = await _context.Cources!.FirstOrDefaultAsync( c => c.Id == courseId);
 
         if(cource is null) return NotFound();
 
         return Ok(cource.ToDto());
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCource(Guid id , [FromBody] UpdateCourceDto updateCourceDto)
+    [HttpPut("{courseId}")]
+    public async Task<IActionResult> UpdateCource(Guid courseId , [FromBody] UpdateCourceDto updateCourceDto)
     {
-        if(!await _context.Cources!.AnyAsync(c => c.Id == id)) return NotFound();
+        if(!await _context.Cources!.AnyAsync(c => c.Id == courseId)) return NotFound();
 
         if(!ModelState.IsValid) return BadRequest("bir nima ");
 
-        var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == id);
+        var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == courseId);
 
         if(cource is null) return NotFound();
 
@@ -92,10 +92,10 @@ public partial class CourcesController:ControllerBase
         return Ok(cource.ToDto());
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCource(Guid id)
+    [HttpDelete("{courseId}")]
+    public async Task<IActionResult> DeleteCource(Guid courseId)
     {
-        var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == id);
+        var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == courseId);
 
         if(cource is null) return NotFound();
 
@@ -110,10 +110,10 @@ public partial class CourcesController:ControllerBase
         return Ok();
     }
 
-    [HttpPost("{id}/join")]
-    public async Task<IActionResult> JoinCource(Guid id,[FromBody] JoinCourceDto joinCourceDto)
+    [HttpPost("{courseId}/join")]
+    public async Task<IActionResult> JoinCource(Guid courseId,[FromBody] JoinCourceDto joinCourceDto)
     {
-        var cource =await  _context.Cources!.FirstOrDefaultAsync(c => c.Id == id);
+        var cource =await  _context.Cources!.FirstOrDefaultAsync(c => c.Id == courseId);
 
         if(cource is null) 
                     return NotFound();

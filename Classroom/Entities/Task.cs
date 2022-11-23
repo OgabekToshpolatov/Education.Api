@@ -18,4 +18,6 @@ public class Task
     public virtual Cource? Cource { get; set; }
 
     public virtual List<UserTask>? UserTasks { get; set; }
+
+     public virtual List<TaskComment>? Comments { get; set; }
 }

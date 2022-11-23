@@ -13,3 +13,8 @@ public class UserTaskResult
 
     public EUserTaskStatus Status { get; set; }
 }
+public class UsersTaskResult : UserTaskResult
+{
+    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
+}

@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Classroom.Context.Migrations
+namespace Classroom.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221120133044_Added UserTask table")]
-    partial class AddedUserTasktable
+    [Migration("20221122124911_Init ")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,6 +98,38 @@ namespace Classroom.Context.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("Classroom.Entities.TaskComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("TaskId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TaskComments");
                 });
 
             modelBuilder.Entity("Classroom.Entities.User", b =>
@@ -332,6 +364,29 @@ namespace Classroom.Context.Migrations
                     b.Navigation("Cource");
                 });
 
+            modelBuilder.Entity("Classroom.Entities.TaskComment", b =>
+                {
+                    b.HasOne("Classroom.Entities.TaskComment", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("Classroom.Entities.Task", "Task")
+                        .WithMany()
+                        .HasForeignKey("TaskId");
+
+                    b.HasOne("Classroom.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Task");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Classroom.Entities.UserCource", b =>
                 {
                     b.HasOne("Classroom.Entities.Cource", "Cource")
@@ -431,6 +486,11 @@ namespace Classroom.Context.Migrations
             modelBuilder.Entity("Classroom.Entities.Task", b =>
                 {
                     b.Navigation("UserTasks");
+                });
+
+            modelBuilder.Entity("Classroom.Entities.TaskComment", b =>
+                {
+                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("Classroom.Entities.User", b =>
