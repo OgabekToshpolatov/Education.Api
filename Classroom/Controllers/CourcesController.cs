@@ -1,5 +1,6 @@
 using Classroom.Context;
 using Classroom.Entities;
+using Classroom.Filters;
 using Classroom.Mappers;
 using Classroom.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,8 @@ namespace Classroom.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+[TypeFilter(typeof(IsCourceExistsActionFilterAttribute))]
+[TypeFilter(typeof(IsTaskExistsActionFilterAttribute))]
 public partial class CourcesController:ControllerBase
 {
     private readonly AppDbContext _context;
@@ -64,17 +67,12 @@ public partial class CourcesController:ControllerBase
     public async Task<IActionResult> GetCourceById(Guid courseId)
     {
         var cource = await _context.Cources!.FirstOrDefaultAsync( c => c.Id == courseId);
-
-        if(cource is null) return NotFound();
-
-        return Ok(cource.ToDto());
+        return Ok(cource?.ToDto());
     }
 
     [HttpPut("{courseId}")]
     public async Task<IActionResult> UpdateCource(Guid courseId , [FromBody] UpdateCourceDto updateCourceDto)
     {
-        if(!await _context.Cources!.AnyAsync(c => c.Id == courseId)) return NotFound();
-
         if(!ModelState.IsValid) return BadRequest("bir nima ");
 
         var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == courseId);
@@ -97,11 +95,9 @@ public partial class CourcesController:ControllerBase
     {
         var cource = await _context.Cources!.FirstOrDefaultAsync(c => c.Id == courseId);
 
-        if(cource is null) return NotFound();
-
         var user = await _userManager.GetUserAsync(User);
 
-        if(cource.Users!.Any(c => c.UserId == user.Id && c.IsAdmin) != true) return Forbid();
+        if(cource?.Users!.Any(c => c.UserId == user.Id && c.IsAdmin) != true) return Forbid();
 
         _context.Cources?.Remove(cource);
    

@@ -5,25 +5,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Classroom.Filters;
 
-public class IsCourceExistsActionFilterAttribute:ActionFilterAttribute
+public class IsTaskExistsActionFilterAttribute:ActionFilterAttribute
 {
     private readonly AppDbContext _context;
 
-    public IsCourceExistsActionFilterAttribute(AppDbContext context)
+    public IsTaskExistsActionFilterAttribute(AppDbContext context)
     {
         _context = context ;
     }
     public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        if(!context.ActionArguments.ContainsKey("courseId"))
+        if(!context.ActionArguments.ContainsKey("taskId"))
         {
-            await next(); // bu delegat bolgani uchun keyingisini chaqirib ketadi.
+            await next();
             return ;
         }
 
-        var courseId = (Guid?)context.ActionArguments["courseId"];
+        var taskId = (Guid?)context.ActionArguments["taskId"];
 
-        if(!await _context.Cources!.AnyAsync(course => course.Id == courseId))
+        if(!await _context.Tasks!.AnyAsync(task => task.Id == taskId))
         {
             context.Result = new NotFoundResult();
             return ;
