@@ -9,6 +9,7 @@ namespace Classroom.Controllers;
 public partial class CourcesController
 {
    [HttpPost("{courseId}/tasks")]
+   [ProducesResponseType(typeof(TaskDto), StatusCodes.Status200OK)]
    public async Task<IActionResult> AddTask(Guid courseId, [FromBody] CreateTaskDto createTaskDto)
    {
        if(!ModelState.IsValid) return BadRequest();
@@ -33,6 +34,7 @@ public partial class CourcesController
    }
 
    [HttpGet("{courseId}/tasks")]
+   [ProducesResponseType(typeof(List<TaskDto>), StatusCodes.Status200OK)]
    public async Task<IActionResult> GetTasks(Guid courseId)
    {
     // user cource azosi ekanligini tekshirish kerak.
@@ -46,6 +48,7 @@ public partial class CourcesController
    }
 
    [HttpGet("{courseId}/tasks/{taskId}")]
+   [ProducesResponseType(typeof(TaskDto), StatusCodes.Status200OK)]
    public async Task<IActionResult> GetTaskById(Guid courseId, Guid taskId)
    {
       // user cource azosi ekanligini teskshirish kerak.
@@ -58,6 +61,7 @@ public partial class CourcesController
    }
 
    [HttpPut("{courseId}/tasks/{taskId}")]
+    [ProducesResponseType(typeof(TaskDto), StatusCodes.Status200OK)]
    public async Task<IActionResult> UpdateTask(Guid courseId, Guid taskId,[FromBody] UpdateTaskDto updateTaskDto)
    {
       // user cource azosi ekanligini teskshirish kerak.
@@ -90,6 +94,7 @@ public partial class CourcesController
    }
 
    [HttpGet("{courseId}/tasks/{taskId}/results")]
+   [ProducesResponseType(typeof(UserTaskResultDto), StatusCodes.Status200OK)]
    public async Task<IActionResult> GetTaskResults(Guid courseId, Guid taskId)
    {
       var task =await  _context.Tasks!.FirstOrDefaultAsync(t => t.Id == taskId && t.CourseId == courseId);
@@ -111,6 +116,7 @@ public partial class CourcesController
    }
 
    [HttpPut("{courseId}/tasks/{taskId}/results/{resultId}")]
+   [ProducesResponseType(typeof(UsersTaskResult), StatusCodes.Status200OK)]
    public async Task<IActionResult> UpdateUserResult(Guid courseId, Guid taskId, Guid resultId, CreateUserTaskResultDto resultDto)
    {
        var task =await  _context.Tasks!.FirstOrDefaultAsync(t => t.Id == taskId && t.CourseId == courseId);

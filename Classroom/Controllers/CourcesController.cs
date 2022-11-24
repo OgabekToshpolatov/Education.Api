@@ -27,6 +27,7 @@ public partial class CourcesController:ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<CourceDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCources( )
     {
         var cources = await  _context.Cources!.ToListAsync();
@@ -35,6 +36,7 @@ public partial class CourcesController:ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(CourceDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateCource(CreateCourceDto createCourceDto)
     {
         if(!ModelState.IsValid) return BadRequest();
@@ -65,6 +67,7 @@ public partial class CourcesController:ControllerBase
 
     [HttpGet("{courseId}")]
     [IsCourseAdminOrUser(true)]
+    [ProducesResponseType(typeof(CourceDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCourceById(Guid courseId)
     {
         var cource = await _context.Cources!.FirstOrDefaultAsync( c => c.Id == courseId);
@@ -72,6 +75,7 @@ public partial class CourcesController:ControllerBase
     }
 
     [HttpPut("{courseId}")]
+    [ProducesResponseType(typeof(CourceDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateCource(Guid courseId , [FromBody] UpdateCourceDto updateCourceDto)
     {
         if(!ModelState.IsValid) return BadRequest("bir nima ");

@@ -9,6 +9,7 @@ namespace Classroom.Controllers;
 public partial class CourcesController
 {
    [HttpGet("{courseId}/tasks/{taskId}/comments")]
+   [ProducesResponseType(typeof(List<TaskCommentDto>), StatusCodes.Status200OK)]
    public async Task<IActionResult> GetTaskComments(Guid courseId, Guid taskId)
    {
       var task =await  _context.Tasks!.FirstOrDefaultAsync( t => t.Id == taskId && t.CourseId == courseId);
