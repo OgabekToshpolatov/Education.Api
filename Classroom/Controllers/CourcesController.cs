@@ -64,6 +64,7 @@ public partial class CourcesController:ControllerBase
     }
 
     [HttpGet("{courseId}")]
+    [IsCourseAdminOrUser(true)]
     public async Task<IActionResult> GetCourceById(Guid courseId)
     {
         var cource = await _context.Cources!.FirstOrDefaultAsync( c => c.Id == courseId);
