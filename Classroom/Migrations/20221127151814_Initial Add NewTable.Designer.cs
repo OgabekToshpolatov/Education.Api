@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Classroom.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221122124911_Init ")]
-    partial class Init
+    [Migration("20221127151814_Initial Add NewTable")]
+    partial class InitialAddNewTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,34 @@ namespace Classroom.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cources");
+                });
+
+            modelBuilder.Entity("Classroom.Entities.LocalizedStringEntity", b =>
+                {
+                    b.Property<string>("Key")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("En")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Ru")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Uz")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Key");
+
+                    b.ToTable("LocalizedStrings");
+
+                    b.HasData(
+                        new
+                        {
+                            Key = "Required",
+                            En = "{0} field is required",
+                            Ru = "{0} ruscha",
+                            Uz = "{0} kiritilishi kerak"
+                        });
                 });
 
             modelBuilder.Entity("Classroom.Entities.Role", b =>
@@ -76,12 +104,15 @@ namespace Classroom.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("MaxScore")
+                        .HasMaxLength(50)
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("StartDate")
@@ -91,13 +122,18 @@ namespace Classroom.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("task title")
+                        .HasColumnName("title");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("tasks", (string)null);
                 });
 
             modelBuilder.Entity("Classroom.Entities.TaskComment", b =>
@@ -153,6 +189,7 @@ namespace Classroom.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Firstname")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Lastname")
@@ -200,7 +237,7 @@ namespace Classroom.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("Classroom.Entities.UserCource", b =>
@@ -234,7 +271,12 @@ namespace Classroom.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("user task description")
+                        .HasColumnName("description");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
@@ -251,7 +293,7 @@ namespace Classroom.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTasks");
+                    b.ToTable("user_tasks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -371,7 +413,7 @@ namespace Classroom.Migrations
                         .HasForeignKey("ParentId");
 
                     b.HasOne("Classroom.Entities.Task", "Task")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("TaskId");
 
                     b.HasOne("Classroom.Entities.User", "User")
@@ -485,6 +527,8 @@ namespace Classroom.Migrations
 
             modelBuilder.Entity("Classroom.Entities.Task", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("UserTasks");
                 });
 

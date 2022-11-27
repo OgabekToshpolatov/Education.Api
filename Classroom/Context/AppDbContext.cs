@@ -19,6 +19,7 @@ public class AppDbContext:IdentityDbContext<User, Role, Guid>
         base.OnModelCreating(builder);
 
         builder.Entity<LocalizedStringEntity>().HasKey(l => l.Key);
+        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
         builder.Entity<LocalizedStringEntity>().HasData(
             new List<LocalizedStringEntity>()

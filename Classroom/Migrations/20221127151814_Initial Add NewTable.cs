@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Classroom.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitialAddNewTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,11 +24,38 @@ namespace Classroom.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "Cources",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Firstname = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Key = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cources", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LocalizedStrings",
+                columns: table => new
+                {
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    Uz = table.Column<string>(type: "TEXT", nullable: true),
+                    Ru = table.Column<string>(type: "TEXT", nullable: true),
+                    En = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LocalizedStrings", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Firstname = table.Column<string>(type: "TEXT", nullable: false),
                     Lastname = table.Column<string>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -47,20 +74,7 @@ namespace Classroom.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cources",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Key = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cources", x => x.Id);
+                    table.PrimaryKey("PK_users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,6 +99,31 @@ namespace Classroom.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "tasks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    title = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false, defaultValue: "task title"),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    MaxScore = table.Column<int>(type: "INTEGER", maxLength: 50, nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    CourseId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tasks_Cources_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Cources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
@@ -98,9 +137,9 @@ namespace Classroom.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        name: "FK_AspNetUserClaims_users_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -118,9 +157,9 @@ namespace Classroom.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        name: "FK_AspNetUserLogins_users_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -142,9 +181,9 @@ namespace Classroom.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        name: "FK_AspNetUserRoles_users_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -162,34 +201,9 @@ namespace Classroom.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        name: "FK_AspNetUserTokens_users_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tasks",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    MaxScore = table.Column<int>(type: "INTEGER", nullable: false),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false),
-                    CourseId = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tasks_Cources_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Cources",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -207,15 +221,15 @@ namespace Classroom.Migrations
                 {
                     table.PrimaryKey("PK_UserCources", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserCources_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_UserCources_Cources_CourceId",
                         column: x => x.CourceId,
                         principalTable: "Cources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserCources_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -235,49 +249,54 @@ namespace Classroom.Migrations
                 {
                     table.PrimaryKey("PK_TaskComments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TaskComments_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_TaskComments_TaskComments_ParentId",
                         column: x => x.ParentId,
                         principalTable: "TaskComments",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TaskComments_Tasks_TaskId",
+                        name: "FK_TaskComments_tasks_TaskId",
                         column: x => x.TaskId,
-                        principalTable: "Tasks",
+                        principalTable: "tasks",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TaskComments_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTasks",
+                name: "user_tasks",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     TaskId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    description = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false, defaultValue: "user task description"),
                     Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTasks", x => x.Id);
+                    table.PrimaryKey("PK_user_tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserTasks_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_user_tasks_tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "tasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserTasks_Tasks_TaskId",
-                        column: x => x.TaskId,
-                        principalTable: "Tasks",
+                        name: "FK_user_tasks_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "LocalizedStrings",
+                columns: new[] { "Key", "En", "Ru", "Uz" },
+                values: new object[] { "Required", "{0} field is required", "{0} ruscha", "{0} kiritilishi kerak" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -306,17 +325,6 @@ namespace Classroom.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "EmailIndex",
-                table: "AspNetUsers",
-                column: "NormalizedEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TaskComments_ParentId",
                 table: "TaskComments",
                 column: "ParentId");
@@ -332,9 +340,19 @@ namespace Classroom.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_CourseId",
-                table: "Tasks",
+                name: "IX_tasks_CourseId",
+                table: "tasks",
                 column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_tasks_TaskId",
+                table: "user_tasks",
+                column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_tasks_UserId",
+                table: "user_tasks",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserCources_CourceId",
@@ -347,14 +365,15 @@ namespace Classroom.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTasks_TaskId",
-                table: "UserTasks",
-                column: "TaskId");
+                name: "EmailIndex",
+                table: "users",
+                column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTasks_UserId",
-                table: "UserTasks",
-                column: "UserId");
+                name: "UserNameIndex",
+                table: "users",
+                column: "NormalizedUserName",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -375,22 +394,25 @@ namespace Classroom.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "LocalizedStrings");
+
+            migrationBuilder.DropTable(
                 name: "TaskComments");
+
+            migrationBuilder.DropTable(
+                name: "user_tasks");
 
             migrationBuilder.DropTable(
                 name: "UserCources");
 
             migrationBuilder.DropTable(
-                name: "UserTasks");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "tasks");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "users");
 
             migrationBuilder.DropTable(
                 name: "Cources");
