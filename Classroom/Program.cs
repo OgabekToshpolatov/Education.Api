@@ -1,6 +1,7 @@
 using System.Globalization;
 using Classroom.Context;
 using Classroom.Entities;
+using Classroom.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,6 +49,9 @@ builder.Services.AddIdentity<User, Role>(options =>
         options.Password.RequiredLength = 6;
 })
 .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddScoped<LocalizerService>();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

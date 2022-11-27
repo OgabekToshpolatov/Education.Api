@@ -1,5 +1,6 @@
 using Classroom.Entities;
 using Classroom.Models;
+using Classroom.Services;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -66,5 +67,12 @@ public class AccountController:ControllerBase
         var userDto = user.Adapt<UserDto>();
 
         return Ok(userDto);
+    }
+
+    [HttpGet("localizer")]
+    public IActionResult GetString([FromServices] LocalizerService localizerService)
+    {
+        //return Ok(localizerService.GetLocalizedString("Required"));
+        return Ok(localizerService["Required"]);
     }
 }

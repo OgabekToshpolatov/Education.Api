@@ -20,6 +20,17 @@
         },
         "runtime": {
           "Classroom.dll": {}
+        },
+        "resources": {
+          "En/Classroom.resources.dll": {
+            "locale": "En"
+          },
+          "Ru/Classroom.resources.dll": {
+            "locale": "Ru"
+          },
+          "Uz/Classroom.resources.dll": {
+            "locale": "Uz"
+          }
         }
       },
       "Castle.Core/4.4.1": {
