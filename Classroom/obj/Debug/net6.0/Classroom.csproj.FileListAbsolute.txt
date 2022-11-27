@@ -62,3 +62,16 @@ D:\Education.Api\Classroom\obj\Debug\net6.0\Classroom.pdb
 D:\Education.Api\Classroom\obj\Debug\net6.0\Classroom.genruntimeconfig.cache
 D:\Education.Api\Classroom\obj\Debug\net6.0\ref\Classroom.dll
 D:\Education.Api\Classroom\bin\Debug\net6.0\Mapster.dll
+D:\Education.Api\Classroom\bin\Debug\net6.0\En\Classroom.resources.dll
+D:\Education.Api\Classroom\bin\Debug\net6.0\Ru\Classroom.resources.dll
+D:\Education.Api\Classroom\bin\Debug\net6.0\Uz\Classroom.resources.dll
+D:\Education.Api\Classroom\obj\Debug\net6.0\Classroom.Resources.Program.En.resources
+D:\Education.Api\Classroom\obj\Debug\net6.0\Classroom.Resources.Program.Ru.resources
+D:\Education.Api\Classroom\obj\Debug\net6.0\Classroom.Resources.Program.Uz.resources
+D:\Education.Api\Classroom\obj\Debug\net6.0\Classroom.csproj.GenerateResource.cache
+D:\Education.Api\Classroom\obj\Debug\net6.0\En\Classroom.resources.cs
+D:\Education.Api\Classroom\obj\Debug\net6.0\En\Classroom.resources.dll
+D:\Education.Api\Classroom\obj\Debug\net6.0\Ru\Classroom.resources.cs
+D:\Education.Api\Classroom\obj\Debug\net6.0\Ru\Classroom.resources.dll
+D:\Education.Api\Classroom\obj\Debug\net6.0\Uz\Classroom.resources.cs
+D:\Education.Api\Classroom\obj\Debug\net6.0\Uz\Classroom.resources.dll

@@ -36,6 +36,7 @@ public partial class CourcesController:ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(CourceDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateCource(CreateCourceDto createCourceDto)
     {

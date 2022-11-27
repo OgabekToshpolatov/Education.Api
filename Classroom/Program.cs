@@ -17,6 +17,23 @@ builder.Services.AddLocalization(options => {
   options.ResourcesPath = "Resources";
 }); 
 
+builder.Services.AddCors(option => 
+{
+    option.DefaultPolicyName = "AllOrigin";
+    option.AddPolicy("AllOrigin", corsPolicyBuilder => 
+    {
+         corsPolicyBuilder.   
+         AllowAnyHeader()
+         .AllowAnyMethod()
+         .AllowAnyOrigin(); //, mana shu holatda istalgan joydan sorov yuborish mumkin.
+        // corsPolicyBuilder
+        //     .AllowAnyHeader()
+        //     .AllowAnyMethod()
+        //     .WithOrigins("https://localhost:44398")
+        //     .AllowCredentials();
+    });
+});
+
 builder.Services.AddDbContext<AppDbContext>(options => 
 {
     options.UseLazyLoadingProxies().UseSqlite(builder.Configuration.GetConnectionString("Data"));
@@ -39,7 +56,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors();
 app.UseHttpsRedirection();
 app.UseRequestLocalization(options =>
 {
